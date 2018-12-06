@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.106
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMBotHelper", "NMBotHelper\NMBotHelper.csproj", "{A68148B3-6470-4F41-996A-0B09ECD7EF63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A68148B3-6470-4F41-996A-0B09ECD7EF63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A68148B3-6470-4F41-996A-0B09ECD7EF63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A68148B3-6470-4F41-996A-0B09ECD7EF63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A68148B3-6470-4F41-996A-0B09ECD7EF63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0231E5E8-B099-40A0-A2C9-63048B0AC0DD}
+	EndGlobalSection
+EndGlobal
