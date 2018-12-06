@@ -23,22 +23,21 @@ namespace NMBotHelper
         enum MyEnum
         {
             content = 0,
-            filename,
-            url,
-            filetype,
+            meta_storage_path,
             keyphrases,
-            mergedcontent,
+            merged_context,
+            imageTags,
+            celebrity,
         }
 
         public class SearchResult
         {
             public string content { get; set; }
-            public string filename { get; set; }
-            public string url { get; set; }
-            public string filetype { get; set; }
-            public string lang { get; set; }
-            public string mergedcontent { get; set; }
-            public string text { get; set; }
+            public string meta_storage_path { get; set; }
+            public string[] keyphrases { get; set; }
+            public string merged_content { get; set; }
+            public string[] imageTags { get; set; }
+            public string[] celebrity { get; set; }
         }
 
 
@@ -59,20 +58,18 @@ namespace NMBotHelper
 
             // take the generated names from Azure storage in the order they are returned and create array.  This allows me to use
             // enums for friendly names
-            string[] documentDataKeys = { "content", "metadata_storage_name", "metadata_storage_path","metadata_content_type",
-            "keyphrases","merged_content"};
+            string[] documentDataKeys = { "content", "metadata_storage_path", "keyphrases","merged_content","imageTags","celebrities"};
 
             foreach (var result in results.Results)
             {
                 SearchResult searchResult = new SearchResult()
                 {
-                    filename = (string)result.Document[documentDataKeys[(int)MyEnum.filename]],
-                    filetype = (string)result.Document[documentDataKeys[(int)MyEnum.filetype]],
                     content = (string)result.Document[documentDataKeys[(int)MyEnum.content]],
-                    //text = (string)result.Document[documentDataKeys[(int)MyEnum.text]],
-                    //lang = (string)result.Document[documentDataKeys[(int)MyEnum.lang]],
-                    mergedcontent = (string)result.Document[documentDataKeys[(int)MyEnum.mergedcontent]],
-                    url = (string)result.Document[documentDataKeys[(int)MyEnum.url]]
+                    merged_content = (string)result.Document[documentDataKeys[(int)MyEnum.merged_context]],
+                    keyphrases = (string[])result.Document[documentDataKeys[(int)MyEnum.keyphrases]],
+                    imageTags = (string[])result.Document[documentDataKeys[(int)MyEnum.imageTags]],
+                    celebrity = (string[])result.Document[documentDataKeys[(int)MyEnum.celebrity]],
+                    meta_storage_path = (string)result.Document[documentDataKeys[(int)MyEnum.meta_storage_path]],
                 };
 
                 listItems.Add(searchResult);
@@ -89,9 +86,9 @@ namespace NMBotHelper
 
             log.Info("C# HTTP trigger function processed a request.");
 
-            searchServiceName = System.Environment.GetEnvironmentVariable("SEARCHSERVICENAME");
-            queryApiKey = System.Environment.GetEnvironmentVariable("SEARCHAPIKEY");
-            queryIndexName = System.Environment.GetEnvironmentVariable("INDEXNAME");
+            searchServiceName = System.Environment.GetEnvironmentVariable("AZURESEARCHSERVICE");
+            queryApiKey = System.Environment.GetEnvironmentVariable("AZURESESARCHQUERYAPIKEY");
+            queryIndexName = System.Environment.GetEnvironmentVariable("AZURESEARCHINDEXNAME");
 
 
             // parse query parameter
@@ -106,9 +103,18 @@ namespace NMBotHelper
                 question = data?.name;
             }
 
-            return question == null
-                ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
-                : req.CreateResponse(HttpStatusCode.OK, "Hello " + question);
+            if (question == null)
+            {
+                return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body");
+            }
+            else
+            {
+                List<SearchResult> searchResult = Search(question);
+
+                return req.CreateResponse(HttpStatusCode.OK,  searchResult);
+
+            }
+
         }
     }
 }

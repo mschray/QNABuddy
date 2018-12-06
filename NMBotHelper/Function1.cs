@@ -61,12 +61,29 @@ namespace NMBotHelper
             {
                 req.CreateResponse(HttpStatusCode.BadRequest, "Answer is null");
             }
+
             var answer = answers.answer;
-            var returnResult = new
+
+            if (answer.ToLower().Equals("no good match found in KB.".ToLower()))
             {
-                body = $"The answer is: \'{answer}\'"
-            };
-            return req.CreateResponse(HttpStatusCode.OK, returnResult);
+                var returnResult = new
+                {
+                    body = $"I'm just a hack baby and my Mama didn't train me right, bad parents!"
+                };
+                return req.CreateResponse(HttpStatusCode.OK, returnResult);
+
+            }
+            else
+            {
+                var returnResult = new
+                {
+                    body = $"The answer is: \'{answer}\'"
+                };
+                return req.CreateResponse(HttpStatusCode.OK, returnResult);
+
+            }
+
+
         }
     }
 }
