@@ -33,7 +33,7 @@ namespace NMBotHelper
                 // if question isn't in the query parameter or body return an 
                 if (question == null)
                 {
-                    req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a question on the query string or in the request body");
+                    return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a question on the query string or in the request body");
                 }
             }
 
